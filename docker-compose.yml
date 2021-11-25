@@ -1,0 +1,12 @@
+version: '3'
+services:
+  web:
+    image: 10st/jc_web:v1
+    ports:
+      - "8000:8000"
+    links:
+      - database
+  database:
+    image: 10st/jc_mysql:v1
+    ports:
+      - "3306:3306"

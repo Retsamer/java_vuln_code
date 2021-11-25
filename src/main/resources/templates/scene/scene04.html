@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<!--upload-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../static/css/element/element-ui.css">
+    <link rel="stylesheet" href="../../static/css/element/global.css">
+    <link rel="stylesheet" href="../../static/css/scenecss/uploadscene.css">
+    <title>文件上传演示平台</title>
+</head>
+<body>
+    <div id="app">
+        <div class="title">
+            <h3>文件上传漏洞演示</h3>
+            <el-alert
+                :title="describe1"
+                type="warning"
+                :closable="false"
+                style="width:400px;margin: 0 auto;">
+            </el-alert>
+        </div>
+        <el-upload
+        drag
+        :action="url01"
+        :on-success="uploadSuccess"
+        :show-file-list="false">
+            <i class="el-icon-upload"></i>
+            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+        </el-upload>
+
+        <div class="title">
+            <h3>文件上传漏洞修复</h3>
+            <el-alert
+                :title="describe2"
+                type="success"
+                :closable="false"
+                style="width:400px;margin: 0 auto;">
+            </el-alert>
+        </div>
+        <el-upload
+        drag
+        :action="url02"
+        :on-success="uploadSuccess"
+        :show-file-list="false">
+            <i class="el-icon-upload"></i>
+            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+        </el-upload>
+    </div>
+    <script src="../../static/js/element/axios.js"></script>
+    <script src="../../static/js/element/vue.min.js"></script>
+    <script src="../../static/js/element/element-ui.js"></script>
+    <script src="../static/js/consoleinfo.js"></script>
+    <script>
+        var vm = new Vue({
+            el:"#app",
+            created() {
+                this.init()
+            },
+            data() {
+                return {
+                    scenes: [],
+                    url01:"",
+                    url02:"",
+                    describe1: '',
+                    describe2: ''
+                }
+            },
+            methods:{
+                uploadSuccess(response, file, fileList) {
+                    console.log(response)
+                    const typeMessage = response.code === '200' ? 'success' : 'error'
+                    this.$message({
+                        message: response.result,
+                        type: typeMessage
+                    })
+                },
+                async init() {
+                    let urI = window.location.hash
+                    console.log(urI)
+                    urI = urI.substring(1);
+                    const res = await axios.get(`/${urI}`);
+                    this.scenes = res.data
+                    this.describe1 = this.scenes.content
+                    this.url01 = this.scenes.url
+
+                    this.describe2 = this.scenes.vulnRepaire[0].content
+                    this.url02 = this.scenes.vulnRepaire[0].url
+                }
+            }
+        })
+    </script>
+</body>
+</html>

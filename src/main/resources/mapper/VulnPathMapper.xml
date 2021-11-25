@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cinderella.demo.mapper.VulnPathMapper">
+    <select id="findAllSQLVuln01" resultType="com.cinderella.demo.dao.VulnPath">
+        SELECT id,name,content,url1,color FROM vulnpath WHERE symbol like '%sqli%';
+    </select>
+
+    <select id="findAllXSSVuln01" resultType="com.cinderella.demo.dao.VulnPath">
+        SELECT id,name,content,url1,color FROM vulnpath WHERE symbol like '%xss%';
+    </select>
+
+    <select id="findAllURLVuln01" resultType="com.cinderella.demo.dao.VulnPath">
+        SELECT id,name,content,url1,color FROM vulnpath WHERE symbol like '%urlredirect%';
+    </select>
+
+    <select id="findAllThymeleafVuln01" resultType="com.cinderella.demo.dao.VulnPath">
+        SELECT id,name,content,url1,color FROM vulnpath WHERE symbol like '%thymeleafi%';
+    </select>
+
+    <select id="findAllXXEVuln01" resultType="com.cinderella.demo.dao.VulnPath">
+        SELECT id,name,content,url1,color FROM vulnpath WHERE symbol like '%xxe%';
+    </select>
+
+    <select id="findAllSSRFVuln01" resultType="com.cinderella.demo.dao.VulnPath">
+        SELECT id,name,content,url1,color FROM vulnpath WHERE symbol like '%ssrf%';
+    </select>
+
+    <select id="findAllPathtraversalVuln01" resultType="com.cinderella.demo.dao.VulnPath">
+        SELECT id,name,content,url1,color FROM vulnpath WHERE symbol like '%pathtraversal%';
+    </select>
+
+    <select id="findAllIdorVuln01" resultType="com.cinderella.demo.dao.VulnPath">
+        SELECT id,name,content,url1,color FROM vulnpath WHERE symbol like '%idor%';
+    </select>
+
+    <select id="findAllUploadVuln01" resultType="com.cinderella.demo.dao.VulnPath">
+        SELECT id,name,content,url1,color FROM vulnpath WHERE symbol like '%upload%';
+    </select>
+
+    <select id="findAllFastjsonVuln01" resultType="com.cinderella.demo.dao.VulnPath">
+        SELECT id,name,content,url1,color FROM vulnpath WHERE symbol='fastjson';
+    </select>
+
+    <select id="findAllCmdiVuln01" resultType="com.cinderella.demo.dao.VulnPath">
+        SELECT id,name,content,url1,color FROM vulnpath WHERE symbol='cmdi';
+    </select>
+
+    <select id="findAllShiroVuln01" resultType="com.cinderella.demo.dao.VulnPath">
+        SELECT id,name,content,url1,color FROM vulnpath WHERE symbol='shiro';
+    </select>
+
+
+    <select id="findVuln" resultType="com.cinderella.demo.dao.VulnPath">
+        SELECT id,name,content,url FROM vulnpath WHERE symbol = #{vuln};
+    </select>
+
+</mapper>

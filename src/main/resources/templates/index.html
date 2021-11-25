@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/element/element-ui.css">
+    <link rel="stylesheet" href="../static/css/element/global.css">
+    <link rel="stylesheet" href="../static/css/element/swiper-bundle.min.css">
+    <link rel="stylesheet" href="../static/css/homecss/home.css">
+    <style>
+        .loginout{
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+        /*.loginout>.el-button{*/
+        /*    visibility:hidden;*/
+        /*}*/
+    </style>
+    <title>Java安全开发演示平台</title>
+</head>
+<body>
+    <div id="app">
+        <div class="bg"></div>
+        <div class="loginout">
+            <el-button type="primary" @click="LoginOut">退出</el-button>
+        </div>
+        <div class="pane">
+            <div class="header_text">
+                <p>Java安全开发演示平台</p>
+            </div>
+        </div>
+            <div class="swiper-container" style="z-index:-1">
+                <div class="swiper-wrapper">
+    
+                    <div class="swiper-slide" v-for="item in data" :key="item.id">
+                        <div class="card">
+                            <div class="sliderText" :style="{'background': item.color}">
+                                <h3 style="text-align: center">{{item.name}}</h3>
+                            </div>
+                            <div class="content">
+                                <p>
+                                    {{item.content}}
+                                </p>
+                            </div>
+                            <button @click="goUrl(item.url)">测试场景</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+    </div>
+    <script src="../static/js/element/axios.js"></script>
+    <script src="../static/js/element/vue.min.js"></script>
+    <script src="../static/js/element/element-ui.js"></script>
+    <script src="../static/js/element/swiper-bundle.min.js"></script>
+    <script src="../static/js/consoleinfo.js"></script>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            created(){
+                this.dataInit()
+            },
+            mounted(){
+                this.init()
+            },
+            data(){
+                return{
+                    cIndex: 0,
+                    data: []
+                }
+            },
+            methods:{
+                async dataInit(){
+                    const res = await axios.get('/allVuln');
+                    this.data = res.data
+
+                    // let div = document.querySelector(".loginout")
+                    // let button = document.querySelector(".loginout .el-button")
+                    // div.onmouseover = function(){
+                    //     button.style.visibility = "visible";
+                    // }
+                    // div.onmouseout = function(){
+                    //     button.style.visibility = "hidden";
+                    // }
+                },
+                init(){
+                    this.cIndex = window.sessionStorage.getItem('activeIndex') ? window.sessionStorage.getItem('activeIndex') : 0
+                    var swiper = new Swiper('.swiper-container', {
+                        effect: 'coverflow',
+                        initialSlide: this.cIndex,
+                        grabCursor: true,
+                        centeredSlides: true,
+                        observer: true,
+                        slidesPerView: 'auto',
+                        coverflowEffect: {
+                            rotate: 0,
+                            stretch: 0,
+                            depth: 200,
+                            modifier: 1,
+                            slideShadows : true,
+                        },
+                        pagination: {
+                            el: '.swiper-pagination',
+                        },
+                        on:{
+                            slideChange: function(){
+                                window.sessionStorage.setItem('activeIndex',this.activeIndex);
+                            },
+                        }
+                    });
+                    document.querySelector(".swiper-container").style.zIndex = 1
+                },
+                goUrl(data) {
+                    window.location = data
+                },
+                async LoginOut() {
+                    await axios.get('/logout');
+                    window.location.href='/login'
+                }
+            }
+        })
+    </script>
+</body>
+</html>

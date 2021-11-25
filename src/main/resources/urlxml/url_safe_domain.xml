@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<domains>
+    <safedomains>
+        <!-- 支持一级域名或多级域名 -->
+        <domain>www.baidu.com</domain>
+        <domain>baidu.com</domain>
+    </safedomains>
+
+    <!-- 支持一级域名或多级域名 -->
+    <blockdomains>
+        <domain>bing.com</domain>
+    </blockdomains>
+
+</domains>

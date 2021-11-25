@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/element/element-ui.css">
+    <link rel="stylesheet" href="../static/css/element/global.css">
+    <link rel="stylesheet" href="../static/css/logincss/login.css">
+    <title>Java安全开发演示平台</title>
+</head>
+<body>
+    <div id="app">
+        <div class='login_container'>
+            <div class="login_bg"></div>
+            <div class="login_box">
+                <!-- 头像区域 -->
+                <div class="avatar-box">
+                    <img src="../static/image/header.jpeg">
+                </div>
+                
+                <!-- 登陆表单结构 -->
+                <el-form ref="loginFormRef" class="login_form" :model="loginFrom" :rules="loginFormRules">
+                    <el-form-item prop="username">
+                        <el-input prefix-icon="el-icon-user" v-model="loginFrom.username" clearable></el-input>
+                    </el-form-item>
+                    <el-form-item prop="password">
+                        <el-input prefix-icon="el-icon-key" type="password" v-model="loginFrom.password" clearable></el-input>
+                    </el-form-item>
+                    <el-form-item prop="validateCode">
+                        <div class="CodeImg">
+                            <el-input v-model="loginFrom.validateCode" clearable class="CatorCode" placeholder="请输入验证码"></el-input>
+                            <img :src="url" @click="flush">
+                        </div>
+                    </el-form-item>
+                    <el-form-item class="footer">
+                        <el-checkbox v-model="loginFrom.rememberMe">记住我</el-checkbox>
+                    </el-form-item>
+                    <el-form-item class="btns">
+                        <el-button type="primary" @click="login">登陆</el-button>
+                        <el-button type="info" @click="resetLoginForm">重置</el-button>
+                    </el-form-item>
+                </el-form>
+            </div>
+        </div>
+    </div>
+    <script src="../static/js/element/axios.js"></script>
+    <script src="../static/js/element/vue.min.js"></script>
+    <script src="../static/js/element/element-ui.js"></script>
+    <script src="../static/js/consoleinfo.js"></script>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data(){
+                return{
+                    loginFrom:{
+                        username:'',
+                        password:'',
+                        validateCode:'',
+                        rememberMe: false
+                    },
+                    loginFormRules:{
+                        username: [
+                            { required: true, message: '请输入用户名', trigger: 'blur' },
+                        ],
+                        //验证密码是否合法
+                        password: [
+                            { required: true, message: '请输入密码', trigger: 'blur' },
+                        ],
+                        validateCode: [
+                            { required: true, message: '请输入验证码', trigger: 'blur' }
+                        ]
+                    },
+                    url:"/captcha/captchaImage"
+                }
+            },
+            methods:{
+                //点击重置按钮
+                resetLoginForm(){
+                    this.$refs.loginFormRef.resetFields();
+                },
+                login(){
+                    this.$refs.loginFormRef.validate(async valid => {
+                        if(!valid) return;
+                        const res = await axios.post('/userLogin', this.loginFrom);
+                        if(res.data.code !== 200){
+                            this.flush()
+                            this.$message({
+                                message: res.data.message,
+                                type: 'error'
+                            })
+                            return
+                        }
+                        location.href="index";
+                    });
+                },
+                flush(){
+                    this.url = "/captcha/captchaImage?"+Math.random()
+                }
+            }
+        });
+    </script>
+</body>
+</html>

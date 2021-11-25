@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<!--只有描述-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../static/css/element/element-ui.css">
+    <link rel="stylesheet" href="../../static/css/element/global.css">
+    <link rel="stylesheet" href="../../static/css/scenecss/comment.css">
+    <style>
+        .el-card__body{
+            height:100%;
+        }
+        .el-alert__title{
+            font-size: 20px;
+        }
+    </style>
+    <title>场景演示平台</title>
+</head>
+<body>
+    <div id="app">
+        <el-card>
+            <el-row style="height:45%;display: block;background-color: #fdf6ec; white-space: pre-wrap;">
+                <el-col :span="24">
+                    <el-alert
+                        :title="describe01"
+                        type="warning"
+                        :closable="false">
+                    </el-alert>
+                </el-col>
+            </el-row>
+
+            <el-row style="height:45%;display: block;background-color: #f0f9eb; white-space: pre-wrap;">
+                <el-col :span="24">
+                    <el-alert
+                        :title="describe02"
+                        type="success"
+                        :closable="false">
+                    </el-alert>
+                </el-col>
+            </el-row>
+        </el-card>
+    </div>
+    <script src="../../static/js/element/axios.js"></script>
+    <script src="../../static/js/element/vue.min.js"></script>
+    <script src="../../static/js/element/element-ui.js"></script>
+    <script src="../static/js/consoleinfo.js"></script>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            created() {
+                this.init()
+            },
+            data() {
+                return{
+                    radio : 1,
+                    describe01: "",
+                    describe02: "",
+                }
+            },
+            methods:{
+                async init() {
+                    let urI = window.location.hash
+                    console.log(urI)
+                    urI = urI.substring(1);
+                    const res = await axios.get(`/${urI}`);
+                    this.describe01 = res.data.content
+                    this.describe02 = res.data.vulnRepaire[0].content
+                }
+            }
+        })
+    </script>
+</body>
+</html>

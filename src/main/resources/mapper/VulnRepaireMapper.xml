@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cinderella.demo.mapper.VulnRepaireMapper">
+    <select id="findRepaireBySymbol" resultType="com.cinderella.demo.dao.VulnRepaire">
+        SELECT id,name,content,url FROM repaire where symbol=#{str};
+    </select>
+
+    <select id="findURLRRepaireByUrl" resultType="com.cinderella.demo.dao.VulnRepaire">
+        SELECT id,name,content,url FROM repaire where symbol like '%urlredirect%';
+    </select>
+
+
+    <select id="findSSRFRepaireByUrl" resultType="com.cinderella.demo.dao.VulnRepaire">
+        SELECT id,name,content,url FROM repaire where symbol like '%ssrf%';
+    </select>
+
+
+
+</mapper>

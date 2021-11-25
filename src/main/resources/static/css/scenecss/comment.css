@@ -1,0 +1,28 @@
+.el-card{
+    width: 90%;
+    height: 90%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+.el-card__body > .el-row{
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+.el-col{
+    padding: 0;
+    margin: 0;
+}
+.radioItem{
+    margin-bottom: 20px;
+}
+.repair_margin{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.radioBtn{
+    display: flex;
+    justify-content: center;
+}

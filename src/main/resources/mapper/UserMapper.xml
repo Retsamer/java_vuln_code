@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cinderella.demo.mapper.UserMapper">
+    <select id="findByNameVuln" resultType="com.cinderella.demo.dao.User">
+        SELECT * FROM user WHERE username = '${name}'
+    </select>
+
+    <select id="likeFindByNameVuln" resultType="com.cinderella.demo.dao.User">
+        SELECT * FROM user WHERE username like '%${name}%'
+    </select>
+
+    <select id="orderByAgeVuln" resultType="com.cinderella.demo.dao.User">
+        SELECT * FROM user
+        <if test="order != null">
+            ORDER BY ${order} ASC LIMIT 1
+        </if>
+    </select>
+
+    <select id="findByNameSec" resultType="com.cinderella.demo.dao.User">
+        SELECT * FROM user WHERE username = #{name}
+    </select>
+
+    <select id="likeFindByNameSec" resultType="com.cinderella.demo.dao.User">
+        SELECT * FROM user WHERE username like concat('%',#{name},'%')
+    </select>
+
+    <select id="findById" resultType="com.cinderella.demo.dao.User">
+        SELECT * FROM user WHERE id = #{id}
+    </select>
+
+    <update id="updateContent">
+        UPDATE user SET content=#{content} WHERE username=#{username}
+    </update>
+
+    <select id="findContentByUsername" resultType="String">
+        SELECT content FROM user WHERE username=#{username}
+    </select>
+</mapper>

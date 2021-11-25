@@ -1,0 +1,15 @@
+.el-upload{
+    margin-left: 50%;
+    transform: translateX(-50%);
+    margin-top: 20px;
+}
+.el-upload__tip{
+    text-align: center;
+}
+.el-upload-list__item-name{
+    text-align: center;
+}
+.title{
+    margin-top: 20px;
+    text-align: center;
+}

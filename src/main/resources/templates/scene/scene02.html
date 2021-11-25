@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<!--XSS-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../static/css/element/element-ui.css">
+    <link rel="stylesheet" href="../../static/css/element/global.css">
+    <link rel="stylesheet" href="../../static/css/scenecss/comment.css">
+    <title>场景演示平台</title>
+</head>
+<body>
+    <div id="app">
+        <el-card>
+            <el-row :gutter="20">
+                <el-col :span="18">
+                    <el-input v-model="submitData" placeholder="请输入内容" clearable></el-input>
+                </el-col>
+                <el-col :span="6">
+                    <el-button type="primary" @click="submit">提交</el-button>
+                </el-col>
+            </el-row>
+
+            <el-row>
+                <el-col :span="18">
+                    <el-alert
+                        :title="content"
+                        type="success"
+                        :closable="false">
+                    </el-alert>
+                </el-col>
+            </el-row>
+
+            <el-row :gutter="20">
+                <el-col :span="18">
+                    <div class="content"></div>
+                </el-col>
+                <el-col :span="6">
+                    <el-radio-group v-model="radio" @change="changeed">
+                        <el-row class="radioItem">
+                            <el-col>
+                                <el-radio :label="scenes.url" border>{{scenes.name}}</el-radio>
+                            </el-col>
+                        </el-row>
+                        <el-row v-for="scene in repair" :key="scene.id" class="radioItem">
+                            <el-col>
+                                <el-radio :label="scene.url" border>{{scene.name}}</el-radio>
+                            </el-col>
+                        </el-row>
+                    </el-radio-group>
+                </el-col>
+            </el-row>
+        </el-card>
+    </div>
+    <script src="../../static/js/element/axios.js"></script>
+    <script src="../../static/js/element/vue.min.js"></script>
+    <script src="../../static/js/element/element-ui.js"></script>
+    <script src="../static/js/consoleinfo.js"></script>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            created() {
+                this.init()
+            },
+            data() {
+                return{
+                    scenes : {},
+                    repair : [],
+                    radio : "",
+                    submitData: "",
+                    resultData: "",
+                    content: ""
+                }
+            },
+            methods:{
+                async init() {
+                    let urI = window.location.hash
+                    console.log(urI)
+                    urI = urI.substring(1);
+                    const res = await axios.get(`/${urI}`);
+                    this.scenes = res.data
+                    this.radio = this.scenes.url
+                    this.content = this.scenes.content
+                    this.repair = this.scenes.vulnRepaire
+                },
+                async submit() {
+                    const res = await axios.get(this.radio, {
+                        params:{
+                            str: this.submitData
+                        }
+                    })
+                    this.resultData = res.data.result
+                    console.log(this.resultData)
+                    document.querySelector(".content").innerHTML = this.resultData
+                },
+                changeed() {
+                    document.querySelector(".content").innerHTML=''
+                    if(this.scenes.url === this.radio){
+                        this.content = this.scenes.content
+                        return
+                    }
+                    const that = this
+                    this.repair.forEach(item => {
+                        if(item.url === that.radio) {
+                            that.content = item.content
+                            return
+                        }
+                    })
+                }
+            }
+        })
+    </script>
+</body>
+</html>
